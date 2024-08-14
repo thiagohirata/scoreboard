@@ -3,8 +3,8 @@
   "short_name": "Scoreboard",
   "start_url": "./",
   "display": "standalone",
-  "background_color": "#fff",
-  "theme_color": "#000",
+  "background_color": "#202936",
+  "theme_color": "#202936",
   "icons": [
     {
       "src": {

@@ -41,9 +41,16 @@ export type Action =
     }
   | {
       type: "RESET_SCORES";
+    }
+  | {
+      type: "SET_TEAM_NAME";
+      payload?: {
+        teamId: string;
+        name: string;
+      };
     };
 
-const reducer: React.Reducer<State, Action> = (state, action?) => {
+const reducer: React.Reducer<State, Action> = (state, action) => {
   if (!action) return state;
   switch (action.type) {
     case "ADD_TEAM":
@@ -107,6 +114,20 @@ const reducer: React.Reducer<State, Action> = (state, action?) => {
           partials: [],
         })),
       };
+    case "SET_TEAM_NAME":
+      return {
+        ...state,
+        teams: state.teams.map((team) => {
+          if (team.id === action.payload?.teamId) {
+            return {
+              ...team,
+              name: action.payload?.name,
+            };
+          } else {
+            return team;
+          }
+        }),
+      };
     default:
       return state;
   }
@@ -118,7 +139,7 @@ const reducer: React.Reducer<State, Action> = (state, action?) => {
  * @param action
  * @returns
  */
-const finalReducer = (state: State, action: Action): State => {
+const finalReducer: typeof reducer = (state: State, action: Action): State => {
   const newState = reducer(state, action);
   const largestScore = Math.max(...newState.teams.map((team) => team.score));
   return {

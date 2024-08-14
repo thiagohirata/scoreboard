@@ -77,9 +77,9 @@ const ScoreInput: React.FC<ScoreInputProps> = ({
                   onChange={handleScoreChange}
                   autoFocus
                   name="partial"
-                  type={"number"}
+                  type={type}
                   required
-                  step={1}
+                  step={type === "number" ? 1 : undefined}
                   className="block w-full rounded-md border-0 ring-1 px-3 py-2 ring-inset text-6xl text-gray-900 bg-white dark:bg-gray-900 dark:text-white"
                   value={score}
                 />

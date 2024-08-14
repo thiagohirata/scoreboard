@@ -6,6 +6,7 @@ import ModalInput from "../ModalInput";
 import IconCrown from "@tabler/icons/outline/crown.svg";
 import IconMenu from "@tabler/icons/outline/menu-2.svg";
 import Drawer from "../Drawer";
+import { nanoid } from "nanoid";
 
 const PERSISTENCE_KEY = "scoreboard";
 const reducer = persistentReducer(_reducer, PERSISTENCE_KEY);
@@ -20,14 +21,21 @@ const tailList = <T,>(xs: T[], maxLength: number): T[] => {
 
 const MAX_PARTIAL_LENGTH = 8;
 const ScoreBoard: React.FC = () => {
-  const [state, dispatch] = React.useReducer<typeof reducer, string>(
+  const [state, dispatch] = React.useReducer<
+    React.Reducer<State, Action>,
+    string
+  >(
     reducer,
     null,
-    (x): State =>
+    (): State =>
       reducer(
         loadState(PERSISTENCE_KEY, {
-          teams: [],
-        })
+          teams: [
+            { id: nanoid(), name: "Team 1", score: 0 },
+            { id: nanoid(), name: "Team 2", score: 0 },
+          ],
+        }),
+        null
       )
   );
   const [selectedPartial, setSelectedPartial] = React.useState<{
@@ -35,6 +43,8 @@ const ScoreBoard: React.FC = () => {
     round;
     partial;
   }>();
+  const [selectedTeam, setSelectedTeam] =
+    React.useState<State["teams"][number]>();
   const [openMenu, setOpenMenu] = React.useState(false);
   return (
     <>
@@ -97,29 +107,27 @@ const ScoreBoard: React.FC = () => {
             </div>
           ))}
         </div>
-        {[
-          selectedPartial && (
-            <ModalInput
-              type="number"
-              inputId={`${selectedPartial.teamId}-${selectedPartial.round}`}
-              onClose={() => setSelectedPartial(null)}
-              startingValue={selectedPartial.partial}
-              key={`${selectedPartial.teamId}-${selectedPartial.round}`}
-              onSetValue={(partial) =>
-                dispatch({
-                  type: "SET_PARTIAL",
-                  payload: { ...selectedPartial, partial },
-                })
-              }
-              onDeletePartial={() =>
-                dispatch({
-                  type: "REMOVE_PARTIAL",
-                  payload: { ...selectedPartial },
-                })
-              }
-            />
-          ),
-        ]}
+        {selectedPartial && (
+          <ModalInput
+            type="number"
+            inputId={`${selectedPartial.teamId}-${selectedPartial.round}`}
+            onClose={() => setSelectedPartial(null)}
+            startingValue={selectedPartial.partial}
+            key={`${selectedPartial.teamId}-${selectedPartial.round}`}
+            onSetValue={(partial) =>
+              dispatch({
+                type: "SET_PARTIAL",
+                payload: { ...selectedPartial, partial },
+              })
+            }
+            onDeletePartial={() =>
+              dispatch({
+                type: "REMOVE_PARTIAL",
+                payload: { ...selectedPartial },
+              })
+            }
+          />
+        )}
       </div>
       <Drawer open={openMenu} setOpen={setOpenMenu} title="Menu">
         <div className="flex flex-col gap-2">
@@ -144,8 +152,33 @@ const ScoreBoard: React.FC = () => {
           >
             Reset scores
           </button>
+          {state.teams.map((team, i) => (
+            <button
+              key={i}
+              className="btn"
+              type="button"
+              onClick={() => setSelectedTeam(team)}
+            >
+              Rename {team.name}
+            </button>
+          ))}
         </div>
       </Drawer>
+      {selectedTeam && (
+        <ModalInput
+          type="string"
+          inputId={`${selectedTeam.id}`}
+          key={`${selectedTeam.id}`}
+          onClose={() => setSelectedTeam(null)}
+          startingValue={selectedTeam.name}
+          onSetValue={(name) =>
+            dispatch({
+              type: "SET_TEAM_NAME",
+              payload: { teamId: selectedTeam.id, name: name },
+            })
+          }
+        />
+      )}
     </>
   );
 };

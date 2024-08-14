@@ -8,9 +8,6 @@ dependencies:
   '@tabler/icons':
     specifier: ^3.12.0
     version: 3.12.0
-  animate.css:
-    specifier: ^4.1.1
-    version: 4.1.1
   core-js:
     specifier: ^3.38.0
     version: 3.38.0
@@ -1306,10 +1303,6 @@ packages:
       json-schema-traverse: 1.0.0
       require-from-string: 2.0.2
     dev: true
-
-  /animate.css@4.1.1:
-    resolution: {integrity: sha512-+mRmCTv6SbCmtYJCN4faJMNFVNN5EuCTTprDTAo7YzIGji2KADmakjVA3+8mVDkZ2Bf09vayB35lSQIex2+QaQ==}
-    dev: false
 
   /ansi-align@3.0.1:
     resolution: {integrity: sha512-IOfwwBF5iczOjp/WeY4YxyjqAFMQoZufdQWDd19SEExbVLNXqvpzSJ/M7Za4/sCPmQ0+GRquoA7bGcINcxew6w==}

@@ -1,14 +1,12 @@
-import React from "react";
-import "./ScoreBoard.css";
-import _reducer, { type State, type Action } from "./reducer";
-import { persistentReducer, loadState } from "./persistentReducer";
-import ModalInput from "../ModalInput";
+import IconGitHub from "@tabler/icons/outline/brand-github.svg";
 import IconCrown from "@tabler/icons/outline/crown.svg";
 import IconMenu from "@tabler/icons/outline/menu-2.svg";
-import IconGitHub from "@tabler/icons/outline/brand-github.svg";
+import React from "react";
 import Drawer from "../Drawer";
-import { nanoid } from "nanoid";
-import "animate.css";
+import ModalInput from "../ModalInput";
+import "./ScoreBoard.css";
+import { persistentReducer } from "./persistentReducer";
+import _reducer, { type Action, type State } from "./reducer";
 
 const PERSISTENCE_KEY = "scoreboard";
 const reducer = persistentReducer(_reducer, PERSISTENCE_KEY);

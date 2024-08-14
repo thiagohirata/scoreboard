@@ -11,7 +11,7 @@ if (!window.IS_SERVE && "serviceWorker" in navigator) {
 
 const Root: React.FC = () => {
   return (
-    <main className="page py-4">
+    <main className="page p-2">
       <ScoreBoard />
     </main>
   );
@@ -19,4 +19,11 @@ const Root: React.FC = () => {
 
 createRoot(document.getElementById("root")).render(<Root />);
 
-new EventSource("/esbuild").addEventListener("change", () => location.reload());
+if (window.IS_SERVE) {
+  const eventSource = new EventSource("/esbuild");
+  const reload = () => {
+    location.reload();
+    eventSource.removeEventListener("change", reload);
+  };
+  eventSource.addEventListener("change", reload);
+}

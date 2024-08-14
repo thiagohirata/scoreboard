@@ -47,7 +47,7 @@ const Drawer: React.FC<DrawerProps> = ({ title, children, open, setOpen }) => {
                     <CloseIcon alt="close" height={20} width={20} />
                   </button>
                 </div>
-                <div className="relative mt-6 flex-1 px-4 sm:px-6">
+                <div className="relative mt-6 flex-1 px-4 flex">
                   {(open && children) || null}
                 </div>
               </div>

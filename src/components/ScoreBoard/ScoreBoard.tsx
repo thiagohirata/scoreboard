@@ -5,6 +5,7 @@ import { persistentReducer, loadState } from "./persistentReducer";
 import ModalInput from "../ModalInput";
 import IconCrown from "@tabler/icons/outline/crown.svg";
 import IconMenu from "@tabler/icons/outline/menu-2.svg";
+import IconGitHub from "@tabler/icons/outline/brand-github.svg";
 import Drawer from "../Drawer";
 import { nanoid } from "nanoid";
 
@@ -49,24 +50,19 @@ const ScoreBoard: React.FC = () => {
   return (
     <>
       <div className="scoreboard">
-        <div className="actions">
-          <button
-            className="btn-icon"
-            type="button"
-            onClick={() => setOpenMenu(true)}
-          >
-            <span className="sr-only">Open menu</span>
-            <IconMenu />
-          </button>
-        </div>
+        <button
+          className="menu-button"
+          type="button"
+          onClick={() => setOpenMenu(true)}
+        >
+          <span className="sr-only">Open menu</span>
+          <IconMenu height={30} width={30} />
+        </button>
+
         <div className="teams">
           {state.teams.map((team, i) => (
             <div key={i} className="team">
               <div className="name">{team.name}</div>
-
-              <div className="score">
-                {team.leader && <IconCrown />} {team.score}
-              </div>
 
               <div className="partials">
                 {team?.partials?.length > MAX_PARTIAL_LENGTH && (
@@ -104,6 +100,10 @@ const ScoreBoard: React.FC = () => {
                   +
                 </button>
               </div>
+              <div className="score">
+                {team.leader && <IconCrown className="crown-icon" />}{" "}
+                {team.score}
+              </div>
             </div>
           ))}
         </div>
@@ -130,7 +130,7 @@ const ScoreBoard: React.FC = () => {
         )}
       </div>
       <Drawer open={openMenu} setOpen={setOpenMenu} title="Menu">
-        <div className="flex flex-col gap-2">
+        <div className="flex flex-1 flex-col gap-2">
           <button
             className="btn"
             type="button"
@@ -162,6 +162,14 @@ const ScoreBoard: React.FC = () => {
               Rename {team.name}
             </button>
           ))}
+          <div className="mt-auto flex gap-2 justify-center">
+            <a href="https://github.com/thiagohirata/scoreboard">
+              <button className="btn-icon" type="button">
+                <span className="sr-only">Github</span>
+                <IconGitHub height={20} width={20} />
+              </button>
+            </a>
+          </div>
         </div>
       </Drawer>
       {selectedTeam && (

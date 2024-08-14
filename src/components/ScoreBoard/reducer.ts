@@ -99,7 +99,7 @@ const reducer: React.Reducer<State, Action> = (state, action) => {
         ...state,
         teams: state.teams.map((team) => {
           if (team.id === action.payload?.teamId) {
-            const partials = [...team.partials] || [];
+            const partials = team.partials ? [...team.partials] : [];
             partials.splice(action.payload?.round, 1);
             return {
               ...team,

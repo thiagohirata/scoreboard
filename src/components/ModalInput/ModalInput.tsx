@@ -65,10 +65,10 @@ const ScoreInput: React.FC<ScoreInputProps> = ({
       <DialogBackdrop className="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity data-[closed]:opacity-0 data-[enter]:duration-300 data-[leave]:duration-200 data-[enter]:ease-out data-[leave]:ease-in" />
 
       <div className="fixed inset-0 z-10 w-screen overflow-y-auto">
-        <div className="flex min-h-full justify-center text-center items-center p-2">
+        <div className="flex min-h-full justify-center text-center p-2 items-end">
           <DialogPanel
             key={inputId}
-            className="relative transform overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all data-[closed]:translate-y-4 data-[closed]:opacity-0 data-[enter]:duration-300 data-[leave]:duration-200 data-[enter]:ease-out data-[leave]:ease-in sm:my-8 sm:w-full sm:max-w-lg data-[closed]:sm:translate-y-0 data-[closed]:sm:scale-95"
+            className="mb-[50vh] relative transform overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all data-[closed]:translate-y-4 data-[closed]:opacity-0 data-[enter]:duration-300 data-[leave]:duration-200 data-[enter]:ease-out data-[leave]:ease-in"
           >
             <form onSubmit={onFormSubmit}>
               <div className="bg-white text-gray-900 px-4 py-4 flex flex-col gap-3 dark:bg-gray-700 dark:text-white">
@@ -80,14 +80,14 @@ const ScoreInput: React.FC<ScoreInputProps> = ({
                   type={type}
                   required
                   step={type === "number" ? 1 : undefined}
-                  className="block w-full rounded-md border-0 ring-1 px-3 py-2 ring-inset text-6xl text-gray-900 bg-white dark:bg-gray-900 dark:text-white"
+                  className="block w-full rounded-md border-0 ring-1 px-3 py-2 ring-inset text-5xl text-gray-900 bg-white dark:bg-gray-900 dark:text-white"
                   value={score}
                 />
-                <div className="flex justify-end mt-4">
+                <div className="flex justify-end mt-2">
                   {onDelete && (
                     <button
                       type="button"
-                      className="mr-auto"
+                      className="mr-auto btn"
                       onClick={() => {
                         onDelete?.();
                         setOpen(false);
@@ -96,7 +96,9 @@ const ScoreInput: React.FC<ScoreInputProps> = ({
                       Delete
                     </button>
                   )}
-                  <button type="submit">Submit</button>
+                  <button type="submit" className="btn">
+                    Submit
+                  </button>
                 </div>
               </div>
             </form>

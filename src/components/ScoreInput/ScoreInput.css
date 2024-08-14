@@ -1,0 +1,71 @@
+import React from "react";
+import "./ScoreBoard.css";
+import _reducer, { type State, type Action } from "./reducer";
+import { persistentReducer, loadState } from "./persistentReducer";
+
+const PERSISTENCE_KEY = "scoreboard";
+const reducer = persistentReducer(_reducer, PERSISTENCE_KEY);
+
+const ScoreBoard: React.FC = () => {
+  const [state, dispatch] = React.useReducer<typeof reducer, string>(
+    reducer,
+    null,
+    (x): State =>
+      loadState(PERSISTENCE_KEY, {
+        teams: [],
+      })
+  );
+  return (
+    <div className="scoreboard">
+      <div className="actions">
+        <button
+          className="btn-addteam"
+          type="button"
+          onClick={() => dispatch({ type: "ADD_TEAM" })}
+        >
+          Add team
+        </button>
+        <button
+          className="btn-addteam"
+          type="button"
+          onClick={() => dispatch({ type: "REMOVE_TEAM" })}
+        >
+          Remove team
+        </button>
+      </div>
+      <div className="teams">
+        {state.teams.map((team, i) => (
+          <div key={i} className="team">
+            <div className="name">{team.name}</div>
+            <div className="score">{team.score}</div>
+            <div className="partials">
+              {team?.partials?.map((partial, j) => (
+                <div key={j} className="partial">
+                  {partial}
+                </div>
+              ))}
+              <button
+                type="button"
+                className="partial"
+                onClick={() =>
+                  dispatch({
+                    type: "SET_PARTIAL",
+                    payload: {
+                      teamId: team.id,
+                      partial: 1,
+                      round: team?.partials?.length ?? 0,
+                    },
+                  })
+                }
+              >
+                +
+              </button>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+};
+
+export default ScoreBoard;

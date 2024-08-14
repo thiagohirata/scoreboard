@@ -1,0 +1,130 @@
+import React from "react";
+import "./ScoreBoard.css";
+import _reducer, { type State, type Action } from "./reducer";
+import { persistentReducer, loadState } from "./persistentReducer";
+import ScoreInput from "../ScoreInput";
+import IconCrown from "@tabler/icons/outline/crown.svg";
+
+const PERSISTENCE_KEY = "scoreboard";
+const reducer = persistentReducer(_reducer, PERSISTENCE_KEY);
+
+const tailList = <T,>(xs: T[], maxLength: number): T[] => {
+  if (!xs) return xs;
+  if (xs.length <= maxLength) return xs;
+  else {
+    return xs.slice(xs.length - maxLength);
+  }
+};
+
+const MAX_PARTIAL_LENGTH = 8;
+const ScoreBoard: React.FC = () => {
+  const [state, dispatch] = React.useReducer<typeof reducer, string>(
+    reducer,
+    null,
+    (x): State =>
+      loadState(PERSISTENCE_KEY, {
+        teams: [],
+      })
+  );
+  const [selectedPartial, setSelectedPartial] = React.useState<{
+    teamId;
+    round;
+    partial;
+  }>();
+  return (
+    <div className="scoreboard">
+      <div className="actions">
+        <button
+          className="btn"
+          type="button"
+          onClick={() => dispatch({ type: "ADD_TEAM" })}
+        >
+          Add team
+        </button>
+        <button
+          className="btn"
+          type="button"
+          onClick={() => dispatch({ type: "REMOVE_TEAM" })}
+        >
+          Remove team
+        </button>
+        <button
+          className="btn"
+          type="button"
+          onClick={() => dispatch({ type: "RESET_SCORES" })}
+        >
+          Reset scores
+        </button>
+      </div>
+      <div className="teams">
+        {state.teams.map((team, i) => (
+          <div key={i} className="team">
+            <div className="name">{team.name}</div>
+            <div className="score">
+              <IconCrown /> {team.score}
+            </div>
+            <div className="partials">
+              {team?.partials?.length > MAX_PARTIAL_LENGTH && (
+                <div className="partial">...</div>
+              )}
+              {tailList(team?.partials, MAX_PARTIAL_LENGTH)?.map(
+                (partial, j) => (
+                  <button
+                    key={j}
+                    className="partial"
+                    onClick={() =>
+                      setSelectedPartial({
+                        teamId: team.id,
+                        partial,
+                        round: j,
+                      })
+                    }
+                  >
+                    {partial}
+                  </button>
+                )
+              )}
+              <button
+                type="button"
+                className="partial"
+                onClick={() =>
+                  setSelectedPartial({
+                    teamId: team.id,
+                    partial: 0,
+                    round: team?.partials?.length ?? 0,
+                  })
+                }
+              >
+                +
+              </button>
+            </div>
+          </div>
+        ))}
+      </div>
+      {[
+        selectedPartial && (
+          <ScoreInput
+            inputId={`${selectedPartial.teamId}-${selectedPartial.round}`}
+            onClose={() => setSelectedPartial(null)}
+            startingValue={selectedPartial.partial}
+            key={`${selectedPartial.teamId}-${selectedPartial.round}`}
+            onSetValue={(partial) =>
+              dispatch({
+                type: "SET_PARTIAL",
+                payload: { ...selectedPartial, partial },
+              })
+            }
+            onDeletePartial={() =>
+              dispatch({
+                type: "REMOVE_PARTIAL",
+                payload: { ...selectedPartial },
+              })
+            }
+          />
+        ),
+      ]}
+    </div>
+  );
+};
+
+export default ScoreBoard;

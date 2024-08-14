@@ -9,7 +9,7 @@ body {
 
 @layer components {
   .page {
-    @apply container mx-auto px-4 flex flex-col min-h-svh gap-5;
+    @apply mx-auto px-4 flex flex-col min-h-svh gap-5;
     @media (display-mode: fullscreen) {
       & {
         @apply min-h-screen;

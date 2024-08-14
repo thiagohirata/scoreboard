@@ -8,7 +8,7 @@
       @apply grid grid-cols-1 gap-2;
 
       .team {
-        @apply bg-gray-700 rounded relative h-[6em] pt-[3em] px-2;
+        @apply bg-gray-700 rounded relative pt-[2.5em] px-2 pb-2;
         .name {
           @apply absolute left-2 top-1 text-lg;
         }
@@ -17,11 +17,13 @@
         }
 
         .partials {
-          @apply flex gap-1;
+          @apply flex flex-wrap gap-1;
+          width: calc(100% - 6em);
           .partial {
             @apply flex w-[2.5em] h-[2.5em] bg-gray-500 rounded-sm items-center justify-center relative;
+
             .partial-round-number {
-              @apply absolute top-[-1.3em] text-xs font-bold text-gray-400;
+              @apply absolute left-[0.1em] top-[-.2em] text-xs font-bold opacity-40 text-black;
             }
           }
         }

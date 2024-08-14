@@ -19,7 +19,7 @@ const tailList = <T,>(xs: T[], maxLength: number): T[] => {
   }
 };
 
-const MAX_PARTIAL_LENGTH = 8;
+const MAX_PARTIAL_LENGTH = 100;
 const ScoreBoard: React.FC = () => {
   const [state, dispatch] = React.useReducer<
     React.Reducer<State, Action>,

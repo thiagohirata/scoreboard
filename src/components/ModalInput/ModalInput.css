@@ -3,37 +3,4 @@
 @tailwind utilities;
 
 @layer components {
-  .scoreboard {
-    .teams {
-      @apply grid grid-cols-1 gap-2;
-
-      .team {
-        @apply bg-gray-700 rounded relative h-[6em] pt-[3em] px-2;
-        .name {
-          @apply absolute left-2 top-1 text-lg;
-        }
-        .score {
-          @apply absolute right-2 bottom-5 text-4xl font-bold flex gap-2 items-center;
-        }
-
-        .partials {
-          @apply flex gap-1;
-          .partial {
-            @apply flex w-[2.5em] h-[2.5em] bg-gray-500 rounded-sm items-center justify-center relative;
-            .partial-round-number {
-              @apply absolute top-[-1.3em] text-xs font-bold text-gray-400;
-            }
-          }
-        }
-      }
-    }
-  }
-
-  .actions {
-    @apply flex gap-1 mb-4 justify-end;
-  }
-
-  .btn {
-    @apply transition rounded-md bg-transparent px-2.5 py-1.5 text-sm font-semibold shadow-sm hover:ring-1 ring-inset ring-gray-300 hover:bg-gray-600 hover:text-gray-50;
-  }
 }

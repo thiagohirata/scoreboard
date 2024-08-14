@@ -120,7 +120,7 @@ const ScoreBoard: React.FC = () => {
                 payload: { ...selectedPartial, partial },
               })
             }
-            onDeletePartial={() =>
+            onDelete={() =>
               dispatch({
                 type: "REMOVE_PARTIAL",
                 payload: { ...selectedPartial },
@@ -175,6 +175,12 @@ const ScoreBoard: React.FC = () => {
             dispatch({
               type: "SET_TEAM_NAME",
               payload: { teamId: selectedTeam.id, name: name },
+            })
+          }
+          onDelete={() =>
+            dispatch({
+              type: "REMOVE_TEAM",
+              payload: { teamId: selectedTeam.id },
             })
           }
         />

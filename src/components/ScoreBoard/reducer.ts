@@ -21,7 +21,7 @@ export type Action =
   | {
       type: "REMOVE_TEAM";
       payload?: {
-        index: number;
+        teamId: string;
       };
     }
   | {
@@ -66,10 +66,16 @@ const reducer: React.Reducer<State, Action> = (state, action) => {
         ],
       };
     case "REMOVE_TEAM":
-      const removeIndex = action.payload?.index || state.teams?.length - 1;
+      const removeIndex = action.payload?.teamId
+        ? undefined
+        : state.teams?.length - 1;
       return {
         ...state,
-        teams: state.teams.filter((team, index) => index !== removeIndex),
+        teams: state.teams.filter((team, index) =>
+          removeIndex != null
+            ? index !== removeIndex
+            : team.id !== action.payload.teamId
+        ),
       };
     case "SET_PARTIAL":
       return {

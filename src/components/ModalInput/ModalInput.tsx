@@ -13,7 +13,7 @@ type P<T> = {
   startingValue?: T;
   inputId?: string;
   onSetValue: (value: T) => void;
-  onDeletePartial?: () => void;
+  onDelete?: () => void;
 };
 
 type ScoreInputProps =
@@ -29,7 +29,7 @@ const ScoreInput: React.FC<ScoreInputProps> = ({
   onClose,
   startingValue,
   onSetValue,
-  onDeletePartial,
+  onDelete,
   type,
 }) => {
   const inputRef = React.useRef<HTMLInputElement>();
@@ -84,12 +84,12 @@ const ScoreInput: React.FC<ScoreInputProps> = ({
                   value={score}
                 />
                 <div className="flex justify-end mt-4">
-                  {onDeletePartial && (
+                  {onDelete && (
                     <button
                       type="button"
                       className="mr-auto"
                       onClick={() => {
-                        onDeletePartial?.();
+                        onDelete?.();
                         setOpen(false);
                       }}
                     >

@@ -7,7 +7,7 @@ type Team = {
   name: string;
   partials?: number[];
   score: number;
-  leader: number;
+  leader?: boolean;
 };
 
 export type State = {
@@ -43,7 +43,8 @@ export type Action =
       type: "RESET_SCORES";
     };
 
-const reducer: React.Reducer<State, Action> = (state, action) => {
+const reducer: React.Reducer<State, Action> = (state, action?) => {
+  if (!action) return state;
   switch (action.type) {
     case "ADD_TEAM":
       return {
@@ -73,7 +74,7 @@ const reducer: React.Reducer<State, Action> = (state, action) => {
             return {
               ...team,
               partials,
-              score: partials.reduce((a, b) => a + (b || 0), 0),
+              score: partials?.reduce((a, b) => a + (b || 0), 0) ?? 0,
             };
           } else {
             return team;
@@ -90,7 +91,7 @@ const reducer: React.Reducer<State, Action> = (state, action) => {
             return {
               ...team,
               partials,
-              score: partials.reduce((a, b) => a + (b || 0), 0),
+              score: partials?.reduce((a, b) => a + (b || 0), 0) ?? 0,
             };
           } else {
             return team;
@@ -111,4 +112,24 @@ const reducer: React.Reducer<State, Action> = (state, action) => {
   }
 };
 
-export default reducer;
+/**
+ * Calculates leader
+ * @param state
+ * @param action
+ * @returns
+ */
+const finalReducer = (state: State, action: Action): State => {
+  const newState = reducer(state, action);
+  const largestScore = Math.max(...newState.teams.map((team) => team.score));
+  return {
+    ...newState,
+    teams: newState.teams.map((team) => {
+      return {
+        ...team,
+        leader: team.score == largestScore,
+      };
+    }),
+  };
+};
+
+export default finalReducer;

@@ -6,14 +6,23 @@ import {
   DialogPanel,
   DialogTitle,
 } from "@headlessui/react";
+import "./ModalInput.css";
 
-type ScoreInputProps = {
+type P<T> = {
   onClose: (open: boolean) => void;
-  startingValue: number;
-  inputId: string;
-  onSetValue: (value: number) => void;
-  onDeletePartial: () => void;
+  startingValue?: T;
+  inputId?: string;
+  onSetValue: (value: T) => void;
+  onDeletePartial?: () => void;
 };
+
+type ScoreInputProps =
+  | ({
+      type: "number";
+    } & P<number>)
+  | ({
+      type: "string";
+    } & P<string>);
 
 const ScoreInput: React.FC<ScoreInputProps> = ({
   inputId,
@@ -21,6 +30,7 @@ const ScoreInput: React.FC<ScoreInputProps> = ({
   startingValue,
   onSetValue,
   onDeletePartial,
+  type,
 }) => {
   const inputRef = React.useRef<HTMLInputElement>();
   const [open, setOpen] = React.useState(true);
@@ -45,7 +55,8 @@ const ScoreInput: React.FC<ScoreInputProps> = ({
 
   const onFormSubmit: React.FormEventHandler<HTMLFormElement> = (event) => {
     event.preventDefault();
-    onSetValue(parseInt(score));
+    const value = type === "string" ? score : parseInt(score);
+    onSetValue(value as never);
     setOpen(false);
   };
 
@@ -54,33 +65,37 @@ const ScoreInput: React.FC<ScoreInputProps> = ({
       <DialogBackdrop className="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity data-[closed]:opacity-0 data-[enter]:duration-300 data-[leave]:duration-200 data-[enter]:ease-out data-[leave]:ease-in" />
 
       <div className="fixed inset-0 z-10 w-screen overflow-y-auto">
-        <div className="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0">
+        <div className="flex min-h-full justify-center text-center items-center p-2">
           <DialogPanel
             key={inputId}
             className="relative transform overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all data-[closed]:translate-y-4 data-[closed]:opacity-0 data-[enter]:duration-300 data-[leave]:duration-200 data-[enter]:ease-out data-[leave]:ease-in sm:my-8 sm:w-full sm:max-w-lg data-[closed]:sm:translate-y-0 data-[closed]:sm:scale-95"
           >
             <form onSubmit={onFormSubmit}>
-              <div className="bg-white px-4 py-4 flex flex-col gap-3">
+              <div className="bg-white text-gray-900 px-4 py-4 flex flex-col gap-3 dark:bg-gray-700 dark:text-white">
                 <input
                   ref={inputRef}
                   onChange={handleScoreChange}
+                  autoFocus
                   name="partial"
-                  type="number"
+                  type={"number"}
                   required
                   step={1}
-                  className="block w-full rounded-md border-0 ring-1 px-3 py-2 text-gray-900 focus:ring-inset focus:ring-indigo-600 text-6xl"
+                  className="block w-full rounded-md border-0 ring-1 px-3 py-2 ring-inset text-6xl text-gray-900 bg-white dark:bg-gray-900 dark:text-white"
                   value={score}
                 />
-                <div className="flex justify-between mt-4">
-                  <button
-                    type="button"
-                    onClick={() => {
-                      onDeletePartial?.();
-                      setOpen(false);
-                    }}
-                  >
-                    Delete
-                  </button>
+                <div className="flex justify-end mt-4">
+                  {onDeletePartial && (
+                    <button
+                      type="button"
+                      className="mr-auto"
+                      onClick={() => {
+                        onDeletePartial?.();
+                        setOpen(false);
+                      }}
+                    >
+                      Delete
+                    </button>
+                  )}
                   <button type="submit">Submit</button>
                 </div>
               </div>

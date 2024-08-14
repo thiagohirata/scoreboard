@@ -5,6 +5,16 @@ export const persistentReducer = function <R extends { (a, b): any }>(
   key: string
 ): R {
   return ((s, a) => {
+    if (
+      a?.type == "CLEAR_STORAGE" ||
+      a == "CLEAR_STORAGE" ||
+      a?.type == "FULL_RESET"
+    ) {
+      storage.removeItem(key);
+    }
+    if (s === undefined) {
+      s = loadState(key, undefined);
+    }
     const newState = reducer(s, a);
     storage.setItem(key, JSON.stringify(newState));
     return newState;

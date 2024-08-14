@@ -8,6 +8,7 @@ import IconMenu from "@tabler/icons/outline/menu-2.svg";
 import IconGitHub from "@tabler/icons/outline/brand-github.svg";
 import Drawer from "../Drawer";
 import { nanoid } from "nanoid";
+import "animate.css";
 
 const PERSISTENCE_KEY = "scoreboard";
 const reducer = persistentReducer(_reducer, PERSISTENCE_KEY);
@@ -25,20 +26,7 @@ const ScoreBoard: React.FC = () => {
   const [state, dispatch] = React.useReducer<
     React.Reducer<State, Action>,
     string
-  >(
-    reducer,
-    null,
-    (): State =>
-      reducer(
-        loadState(PERSISTENCE_KEY, {
-          teams: [
-            { id: nanoid(), name: "Team 1", score: 0 },
-            { id: nanoid(), name: "Team 2", score: 0 },
-          ],
-        }),
-        null
-      )
-  );
+  >(reducer, null, (): State => reducer(undefined, null));
   const [selectedPartial, setSelectedPartial] = React.useState<{
     teamId;
     round;
@@ -92,7 +80,7 @@ const ScoreBoard: React.FC = () => {
                   onClick={() =>
                     setSelectedPartial({
                       teamId: team.id,
-                      partial: 0,
+                      partial: null,
                       round: team?.partials?.length ?? 0,
                     })
                   }
@@ -151,6 +139,15 @@ const ScoreBoard: React.FC = () => {
             onClick={() => dispatch({ type: "RESET_SCORES" })}
           >
             Reset scores
+          </button>
+          <button
+            className="btn"
+            type="button"
+            onClick={() => {
+              dispatch({ type: "FULL_RESET" } as any);
+            }}
+          >
+            Reset all
           </button>
           {state.teams.map((team, i) => (
             <button

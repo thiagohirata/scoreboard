@@ -48,11 +48,23 @@ export type Action =
         teamId: string;
         name: string;
       };
+    }
+  | {
+      type: "FULL_RESET";
     };
 
+const createInitialState = (): State => ({
+  teams: [
+    { id: nanoid(), name: "Team 1", score: 0 },
+    { id: nanoid(), name: "Team 2", score: 0 },
+  ],
+});
 const reducer: React.Reducer<State, Action> = (state, action) => {
+  if (state == null) {
+    state = createInitialState();
+  }
   if (!action) return state;
-  switch (action.type) {
+  switch (action?.type) {
     case "ADD_TEAM":
       return {
         ...state,
@@ -134,6 +146,8 @@ const reducer: React.Reducer<State, Action> = (state, action) => {
           }
         }),
       };
+    case "FULL_RESET":
+      return createInitialState();
     default:
       return state;
   }

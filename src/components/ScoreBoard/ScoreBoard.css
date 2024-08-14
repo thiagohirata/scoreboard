@@ -10,7 +10,7 @@
       @apply grid grid-cols-1 gap-2;
 
       .team {
-        @apply bg-gray-700 rounded relative pt-[2.5em] px-2 pb-2;
+        @apply bg-gray-700 rounded-sm relative pt-[2.5em] px-2 pb-2;
         .name {
           @apply absolute left-2 top-1 text-lg;
         }

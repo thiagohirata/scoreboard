@@ -33,17 +33,12 @@ const ScoreInput: React.FC<ScoreInputProps> = ({
   type,
 }) => {
   const inputRef = React.useRef<HTMLInputElement>();
-  const [open, setOpen] = React.useState(true);
+  const [open, setOpen] = React.useState(false);
+
   React.useEffect(() => {
-    if (!open) {
-      const timeoutId = setTimeout(() => {
-        onClose(open);
-      }, 300);
-      return () => clearTimeout(timeoutId);
-    } else {
-      inputRef?.current?.select();
-    }
-  }, [open]);
+    // dispara o efeito de transição ao dar o mount
+    setOpen(true);
+  }, []);
 
   const [score, setScore] = React.useState<string>(() =>
     startingValue?.toString()
@@ -62,12 +57,23 @@ const ScoreInput: React.FC<ScoreInputProps> = ({
 
   return (
     <Dialog open={open} onClose={setOpen} className="relative z-10">
-      <DialogBackdrop className="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity data-[closed]:opacity-0 data-[enter]:duration-300 data-[leave]:duration-200 data-[enter]:ease-out data-[leave]:ease-in" />
+      <DialogBackdrop
+        transition
+        className="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity data-[closed]:opacity-0 data-[enter]:duration-300 data-[leave]:duration-200 data-[enter]:ease-out data-[leave]:ease-in"
+      />
 
       <div className="fixed inset-0 z-10 w-screen overflow-y-auto">
         <div className="flex min-h-full justify-center text-center p-2 items-end">
           <DialogPanel
             key={inputId}
+            transition
+            onTransitionEnd={(e) => {
+              if (!open) {
+                onClose(open);
+              } else {
+                inputRef?.current?.focus();
+              }
+            }}
             className="mb-[50vh] relative transform overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all data-[closed]:translate-y-4 data-[closed]:opacity-0 data-[enter]:duration-300 data-[leave]:duration-200 data-[enter]:ease-out data-[leave]:ease-in"
           >
             <form onSubmit={onFormSubmit}>

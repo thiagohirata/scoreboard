@@ -72,6 +72,7 @@ const ScoreInput: React.FC<ScoreInputProps> = ({
                 onClose(open);
               } else {
                 inputRef?.current?.focus();
+                inputRef?.current?.select();
               }
             }}
             className="mb-[50vh] relative transform overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all data-[closed]:translate-y-4 data-[closed]:opacity-0 data-[enter]:duration-300 data-[leave]:duration-200 data-[enter]:ease-out data-[leave]:ease-in"

@@ -7,18 +7,18 @@
     @apply flex flex-col;
 
     .teams {
-      @apply grid grid-cols-5 md:grid-cols-10 gap-1;
+      @apply grid grid-cols-6 md:grid-cols-10 gap-1;
 
       .team {
-        @apply bg-gray-700 rounded-sm relative pt-[5em] px-2 pb-5;
+        @apply bg-gray-700 rounded-sm relative pt-[4em] px-1 pb-6;
         .name {
-          @apply absolute right-1 top-1 text-lg flex text-gray-300;
+          @apply absolute right-1 top-1 text-sm flex text-gray-300 whitespace-nowrap;
         }
         .crown-icon {
-          @apply absolute top-[-15px] left-1 text-lg text-yellow-500;
+          @apply absolute top-[-15px] right-0 text-lg text-yellow-500;
         }
         .score {
-          @apply absolute right-1 top-7 text-4xl font-bold flex gap-2 items-center pointer-events-none;
+          @apply absolute right-1 top-7 text-2xl font-bold flex gap-2 items-center pointer-events-none;
         }
 
         .partials {

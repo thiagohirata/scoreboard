@@ -40,6 +40,11 @@ const ScoreInput: React.FC<ScoreInputProps> = ({
 
   const handleScoreChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setScore(event.target.value);
+    if (event.target.value) {
+      const score = event.target.value
+      const value = type === "string" ? score : parseInt(score);
+      onSetValue(value as never);
+    }
   };
 
   const onFormSubmit: React.FormEventHandler<HTMLFormElement> = (event) => {

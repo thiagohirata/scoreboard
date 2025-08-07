@@ -47,7 +47,12 @@ const ScoreBoard: React.FC = () => {
 
         <div className="teams">
           {state.teams.map((team, i) => (
-            <div key={i} className="team">
+            <div
+              key={i}
+              className={
+                "team " + (selectedPartial?.teamId == team.id ? "active" : "")
+              }
+            >
               <div className="name" onClick={() => setSelectedTeam(team)}>
                 {team.name || "Team " + (i + 1)}
               </div>
@@ -55,6 +60,19 @@ const ScoreBoard: React.FC = () => {
               <div className="score">{team.score}</div>
 
               <div className="partials">
+                <button
+                  type="button"
+                  className="partial"
+                  onClick={() =>
+                    setSelectedPartial({
+                      teamId: team.id,
+                      partial: null,
+                      round: team?.partials?.length ?? 0,
+                    })
+                  }
+                >
+                  +
+                </button>
                 {team?.partials?.length > MAX_PARTIAL_LENGTH && (
                   <div className="partial">...</div>
                 )}
@@ -65,7 +83,13 @@ const ScoreBoard: React.FC = () => {
                     return (
                       <button
                         key={j}
-                        className="partial"
+                        className={
+                          "partial " +
+                          (selectedPartial?.round == j &&
+                          selectedPartial?.teamId == team.id
+                            ? "active"
+                            : "")
+                        }
                         onClick={() =>
                           setSelectedPartial({
                             teamId: team.id,
@@ -86,19 +110,6 @@ const ScoreBoard: React.FC = () => {
                     );
                   }
                 )}
-                <button
-                  type="button"
-                  className="partial"
-                  onClick={() =>
-                    setSelectedPartial({
-                      teamId: team.id,
-                      partial: null,
-                      round: team?.partials?.length ?? 0,
-                    })
-                  }
-                >
-                  +
-                </button>
               </div>
             </div>
           ))}

@@ -11,6 +11,9 @@
 
       .team {
         @apply bg-gray-700 rounded-sm relative pt-[4em] px-1 pb-6;
+        &.active {
+          @apply bg-gray-600;
+        }
         .name {
           @apply absolute right-1 top-1 text-sm flex text-gray-300 whitespace-nowrap;
         }
@@ -23,15 +26,19 @@
 
         .partials {
           @apply flex flex-wrap gap-1;
+
           /* width: calc(100% - 6em); */
           .partial {
+            &.active {
+              @apply bg-gray-300;
+            }
             @apply flex w-full bg-gray-500 font-bold rounded-sm text-lg items-center justify-center relative pb-1 pt-3 overflow-hidden truncate;
 
             .partial-round-number {
               @apply absolute left-[0.1em] top-[-.2em] text-xs text-gray-600;
             }
             .partial-partial {
-              @apply absolute right-[0.1em] top-[-.2em] text-xs font-bold  text-gray-800;
+              @apply absolute right-[0.1em] top-[-.2em] text-xs font-bold text-gray-800;
             }
           }
         }

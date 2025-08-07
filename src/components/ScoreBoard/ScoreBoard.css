@@ -7,7 +7,7 @@
     @apply flex flex-col;
 
     .teams {
-      @apply grid grid-cols-5 gap-1;
+      @apply grid grid-cols-5 md:grid-cols-10 gap-1;
 
       .team {
         @apply bg-gray-700 rounded-sm relative pt-[5em] px-2 pb-5;

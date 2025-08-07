@@ -14,10 +14,10 @@ module.exports = {
         },
       },
     },
-    screens: {
-      sm: defaultTheme.screens.sm,
-      xs: defaultTheme.screens.xs,
-    },
+    // screens: {
+    //   sm: defaultTheme.screens.sm,
+    //   xs: defaultTheme.screens.xs,
+    // },
   },
   plugins: [],
 };

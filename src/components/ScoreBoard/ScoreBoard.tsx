@@ -19,7 +19,7 @@ const tailList = <T,>(xs: T[], maxLength: number): T[] => {
   }
 };
 
-const MAX_PARTIAL_LENGTH = 100;
+const MAX_PARTIAL_LENGTH = 10;
 const ScoreBoard: React.FC = () => {
   const [state, dispatch] = React.useReducer<
     React.Reducer<State, Action>,
@@ -48,29 +48,43 @@ const ScoreBoard: React.FC = () => {
         <div className="teams">
           {state.teams.map((team, i) => (
             <div key={i} className="team">
-              <div className="name">{team.name}</div>
+              <div className="name" onClick={() => setSelectedTeam(team)}>
+                {team.name || "Team " + (i + 1)}
+              </div>
+              {team.leader && <IconCrown className="crown-icon" />}
+              <div className="score">{team.score}</div>
 
               <div className="partials">
                 {team?.partials?.length > MAX_PARTIAL_LENGTH && (
                   <div className="partial">...</div>
                 )}
                 {tailList(team?.partials, MAX_PARTIAL_LENGTH)?.map(
-                  (partial, j) => (
-                    <button
-                      key={j}
-                      className="partial"
-                      onClick={() =>
-                        setSelectedPartial({
-                          teamId: team.id,
-                          partial,
-                          round: j,
-                        })
-                      }
-                    >
-                      <span className="partial-round-number">{j + 1}</span>
-                      {partial}
-                    </button>
-                  )
+                  (partial, x, arr) => {
+                    const skipped = team.partials.length - arr.length;
+                    const j = x + skipped;
+                    return (
+                      <button
+                        key={j}
+                        className="partial"
+                        onClick={() =>
+                          setSelectedPartial({
+                            teamId: team.id,
+                            partial,
+                            round: j,
+                          })
+                        }
+                      >
+                        <span className="partial-round-number">{j + 1}</span>
+
+                        {partial}
+                        <span className="partial-partial">
+                          {team.partials
+                            .slice(0, j + 1)
+                            .reduce((acc, x) => acc + x, 0)}
+                        </span>
+                      </button>
+                    );
+                  }
                 )}
                 <button
                   type="button"
@@ -86,35 +100,31 @@ const ScoreBoard: React.FC = () => {
                   +
                 </button>
               </div>
-              <div className="score">
-                {team.leader && <IconCrown className="crown-icon" />}{" "}
-                {team.score}
-              </div>
             </div>
           ))}
         </div>
-        {selectedPartial && (
-          <ModalInput
-            type="number"
-            inputId={`${selectedPartial.teamId}-${selectedPartial.round}`}
-            onClose={() => setSelectedPartial(null)}
-            startingValue={selectedPartial.partial}
-            key={`${selectedPartial.teamId}-${selectedPartial.round}`}
-            onSetValue={(partial) =>
-              dispatch({
-                type: "SET_PARTIAL",
-                payload: { ...selectedPartial, partial },
-              })
-            }
-            onDelete={() =>
-              dispatch({
-                type: "REMOVE_PARTIAL",
-                payload: { ...selectedPartial },
-              })
-            }
-          />
-        )}
       </div>
+      {selectedPartial && (
+        <ModalInput
+          type="number"
+          inputId={`${selectedPartial.teamId}-${selectedPartial.round}`}
+          onClose={() => setSelectedPartial(null)}
+          startingValue={selectedPartial.partial}
+          key={`${selectedPartial.teamId}-${selectedPartial.round}`}
+          onSetValue={(partial) =>
+            dispatch({
+              type: "SET_PARTIAL",
+              payload: { ...selectedPartial, partial },
+            })
+          }
+          onDelete={() =>
+            dispatch({
+              type: "REMOVE_PARTIAL",
+              payload: { ...selectedPartial },
+            })
+          }
+        />
+      )}
       <Drawer open={openMenu} setOpen={setOpenMenu} title="Menu">
         <div className="flex flex-1 flex-col gap-2">
           <button
@@ -147,16 +157,6 @@ const ScoreBoard: React.FC = () => {
           >
             Reset all
           </button>
-          {state.teams.map((team, i) => (
-            <button
-              key={i}
-              className="btn"
-              type="button"
-              onClick={() => setSelectedTeam(team)}
-            >
-              Rename {team.name}
-            </button>
-          ))}
           <div className="mt-auto flex gap-2 justify-center">
             <a href="https://github.com/thiagohirata/scoreboard">
               <button className="btn-icon" type="button">
@@ -180,11 +180,12 @@ const ScoreBoard: React.FC = () => {
               payload: { teamId: selectedTeam.id, name: name },
             })
           }
-          onDelete={() =>
-            dispatch({
-              type: "REMOVE_TEAM",
-              payload: { teamId: selectedTeam.id },
-            })
+          onDelete={
+            () => {}
+            // dispatch({
+            //   type: "SET_TEAM_NAME",
+            //   payload: { teamId: selectedTeam.id, name: 'name' },
+            // })
           }
         />
       )}

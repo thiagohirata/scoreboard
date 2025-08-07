@@ -55,8 +55,8 @@ export type Action =
 
 const createInitialState = (): State => ({
   teams: [
-    { id: nanoid(), name: "Team 1", score: 0 },
-    { id: nanoid(), name: "Team 2", score: 0 },
+    { id: nanoid(), name: "", score: 0 },
+    { id: nanoid(), name: "", score: 0 },
   ],
 });
 const reducer: React.Reducer<State, Action> = (state, action) => {
@@ -72,7 +72,7 @@ const reducer: React.Reducer<State, Action> = (state, action) => {
           ...state.teams,
           {
             id: nanoid(),
-            name: `Team ${state.teams?.length + 1}`,
+            name: ``,
             score: 0,
           },
         ],

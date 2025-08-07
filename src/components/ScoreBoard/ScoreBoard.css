@@ -7,28 +7,31 @@
     @apply flex flex-col;
 
     .teams {
-      @apply grid grid-cols-1 gap-2;
+      @apply grid grid-cols-5 gap-1;
 
       .team {
-        @apply bg-gray-700 rounded-sm relative pt-[2.5em] px-2 pb-2;
+        @apply bg-gray-700 rounded-sm relative pt-[5em] px-2 pb-5;
         .name {
-          @apply absolute left-2 top-1 text-lg;
+          @apply absolute right-1 top-1 text-lg flex text-gray-300;
+        }
+        .crown-icon {
+          @apply absolute top-[-15px] left-1 text-lg text-yellow-500;
         }
         .score {
-          @apply absolute right-2 top-5 text-4xl font-bold flex gap-2 items-center pointer-events-none;
-          .crown-icon {
-            @apply text-yellow-500;
-          }
+          @apply absolute right-1 top-7 text-4xl font-bold flex gap-2 items-center pointer-events-none;
         }
 
         .partials {
           @apply flex flex-wrap gap-1;
-          width: calc(100% - 6em);
+          /* width: calc(100% - 6em); */
           .partial {
-            @apply flex w-[2.5em] h-[2.5em] bg-gray-500 rounded-sm items-center justify-center relative p-2 overflow-hidden truncate;
+            @apply flex w-full bg-gray-500 font-bold rounded-sm text-lg items-center justify-center relative pb-1 pt-3 overflow-hidden truncate;
 
             .partial-round-number {
-              @apply absolute left-[0.1em] top-[-.2em] text-xs font-bold opacity-40 text-black;
+              @apply absolute left-[0.1em] top-[-.2em] text-xs text-gray-600;
+            }
+            .partial-partial {
+              @apply absolute right-[0.1em] top-[-.2em] text-xs font-bold  text-gray-800;
             }
           }
         }
@@ -46,7 +49,7 @@
   }
 
   .btn {
-    @apply transition rounded-md px-2.5 py-2 text-sm font-semibold bg-gray-600 hover:bg-gray-500 text-gray-50;
+    @apply transition rounded-md px-2.5 py-2 text-sm font-semibold bg-gray-700 hover:bg-gray-500 text-gray-50;
   }
   .btn-icon {
     @apply transition rounded-md px-2 py-2 rounded-full bg-transparent hover:bg-gray-500;
